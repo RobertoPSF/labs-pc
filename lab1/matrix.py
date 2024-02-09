@@ -1,17 +1,13 @@
-import numpy as np
+import random
 
 def generate_matrix(size):
-    return np.random.randint(1, 29001, size=(size, size), dtype=int)
-
-'''def save_matrix(matrix, file_name):
-    np.savetxt(file_name, matrix, fmt='%d', delimiter=' ')'''
+    return [[random.randint(250, 29500) for _ in range(size)] for _ in range(size)]
 
 def min(matrix):
     smallest = float('inf')
 
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[1]):
-            element = matrix[i, j]
+    for row in matrix:
+        for element in row:
             if element < smallest:
                 smallest = element
 
@@ -20,9 +16,8 @@ def min(matrix):
 def max(matrix):
     largest = float('-inf')
 
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[1]):
-            element = matrix[i, j]
+    for row in matrix:
+        for element in row:
             if element > largest:
                 largest = element
 
