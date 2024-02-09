@@ -12,9 +12,6 @@ if __name__ == "__main__":
         print("The size of the matrix must be an integer.")
         sys.exit(1)
 
-    start_time = time.time()
     matrix = generate_matrix(size)
-    end_time = time.time()
-    print(f'Result time: {(end_time-start_time):.2f}')
     print(f'Max value: {max(matrix)}')
     print(f'Min value: {min(matrix)}')
