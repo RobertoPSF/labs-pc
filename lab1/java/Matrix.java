@@ -41,23 +41,4 @@ public class Matrix {
 
         return largest;
     }
-
-    public static void main(String[] args) {
-        int size = 5;  // Substitua pelo tamanho desejado
-        int[][] matrix = generateMatrix(size);
-        int minValue = Min(matrix);
-        int maxValue = Max(matrix);
-
-        // Imprimir os resultados
-        System.out.println("Matriz gerada:");
-        for (int[] row : matrix) {
-            for (int element : row) {
-                System.out.print(element + " ");
-            }
-            System.out.println();
-        }
-
-        System.out.println("Menor valor: " + minValue);
-        System.out.println("Maior valor: " + maxValue);
-    }
 }
