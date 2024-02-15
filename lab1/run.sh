@@ -11,4 +11,4 @@ fi
 
 # Executa o programa java
 MATRIX_SIZE=$1
-java Find $MATRIX_SIZE
+time java Find $MATRIX_SIZE
