@@ -1,0 +1,5 @@
+#ignore java files
+/bin
+
+#ignore python files
+/*.pyc
