@@ -1,5 +1,6 @@
-SANDBOX=$(dirname $(readlink -fm $0))
-cd $SANDBOX/bin
+#!/bin/bash
+
+BASE_DIR=$(dirname -- "$( readlink -f -- "$0"; )")
 
 # Verifica se pelo menos um argumento foi passado
 if [ "$#" -lt 1 ]; then
@@ -7,6 +8,5 @@ if [ "$#" -lt 1 ]; then
   exit 1
 fi
 
-# Passa todos os argumentos para o script Python
-time java Checksum "$@"
-
+# chama o programa java com os arg passados para o script bash
+time java -cp $BASE_DIR/bin/ Checksum "$@"
