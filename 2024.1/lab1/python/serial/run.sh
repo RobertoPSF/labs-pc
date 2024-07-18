@@ -7,5 +7,5 @@ if [ "$#" -lt 1 ]; then
 fi
 
 # Passa todos os argumentos para o script Python
-time python3 checksum.py "$@"
+time python3 sum.py "$@"
 
