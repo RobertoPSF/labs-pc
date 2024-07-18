@@ -9,4 +9,4 @@ if [ "$#" -lt 1 ]; then
 fi
 
 # chama o programa java com os arg passados para o script bash
-time java -cp $BASE_DIR/bin/ Sum "$@"
+java -cp $BASE_DIR/bin/ Sum "$@"
