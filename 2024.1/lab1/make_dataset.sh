@@ -1,5 +1,6 @@
 #/bin/bash
 
+# generate $nfiles random content files in a dataset directory
 nfiles=$1
 
 mkdir -p dataset
