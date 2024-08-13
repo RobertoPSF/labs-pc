@@ -65,7 +65,7 @@ public class FileSimilarity {
             byte[] buffer = new byte[chunkSize];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
-                double sum = calculateSum(buffer, bytesRead);
+                double sum = sum(buffer);
                 chunks.add(sum);
             }
         }
@@ -73,13 +73,19 @@ public class FileSimilarity {
     }
 
     public static int sum(FileInputStream fis) throws IOException {
-        int sum = 0;
+        int totalSum = 0;
         byte[] buffer = new byte[1024];
         int bytesRead;
         while ((bytesRead = fis.read(buffer)) != -1) {
-            for (int i = 0; i < bytesRead; i++) {
-                sum += Byte.toUnsignedInt(buffer[i]);
-            }
+            totalSum += sum(buffer);
+        }
+        return totalSum;
+    }
+
+    private static double sum(byte[] buffer) {
+        double sum = 0;
+        for (byte b : buffer) {
+            sum += Byte.toUnsignedInt(b);
         }
         return sum;
     }
