@@ -1,5 +1,6 @@
 import java.io.*;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
 public class FileSimilarity {
@@ -7,20 +8,22 @@ public class FileSimilarity {
     public static void main(String[] args) throws IOException {
         Path dirPath = Paths.get(args[0]);
         Map<String, List<Double>> fileChunks = new HashMap<>();
-        
+
         // Step 1: Read files and divide content into chunks
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dirPath)) {
-            for (Path path : stream) {
-                if (Files.isRegularFile(path)) {
+        Files.walkFileTree(dirPath, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                if (attrs.isRegularFile()) {
                     try {
-                        List<Double> chunks = getChunks(path.toFile(), 100);
-                        fileChunks.put(path.getFileName().toString(), chunks);
+                        List<Double> chunks = getChunks(file.toFile(), 100);
+                        fileChunks.put(file.getFileName().toString(), chunks);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
+                return FileVisitResult.CONTINUE;
             }
-        }
+        });
 
         // Step 2: Calculate sums of chunks and compare
         Map<String, Map<String, Double>> similarityMap = new HashMap<>();
@@ -58,7 +61,7 @@ public class FileSimilarity {
 
     private static List<Double> getChunks(File file, int chunkSize) throws IOException {
         List<Double> chunks = new ArrayList<>();
-        try (InputStream inputStream = new FileInputStream(file)) {
+        try (FileInputStream inputStream = new FileInputStream(file)) {
             byte[] buffer = new byte[chunkSize];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -67,6 +70,18 @@ public class FileSimilarity {
             }
         }
         return chunks;
+    }
+
+    public static int sum(FileInputStream fis) throws IOException {
+        int sum = 0;
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = fis.read(buffer)) != -1) {
+            for (int i = 0; i < bytesRead; i++) {
+                sum += Byte.toUnsignedInt(buffer[i]);
+            }
+        }
+        return sum;
     }
 
     private static double calculateSum(byte[] buffer, int length) {
