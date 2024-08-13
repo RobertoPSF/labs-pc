@@ -9,5 +9,5 @@ for i in `seq 1 $nfiles`
 do
 	#from 0 to 32K
 	file_size=$RANDOM
-	head -c $file_size < /dev/urandom > dataset/file$i.txt
+	head -c $file_size < /dev/urandom > dataset/file.$i
 done
