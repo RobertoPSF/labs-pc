@@ -1,7 +1,7 @@
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
-import java.util.stream.*;
+import java.util.stream.Stream;
 
 public class FileSimilarity {
 
@@ -56,26 +56,23 @@ public class FileSimilarity {
 
     private static List<Double> getChunks(File file, int chunkSize) throws IOException {
         List<Double> chunks = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            StringBuilder chunk = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                chunk.append(line).append("\n");
-                if (chunk.length() >= chunkSize) {
-                    chunks.add(calculateSum(chunk.toString()));
-                    chunk.setLength(0);
-                }
-            }
-            if (chunk.length() > 0) {
-                chunks.add(calculateSum(chunk.toString()));
+        try (InputStream inputStream = new FileInputStream(file)) {
+            byte[] buffer = new byte[chunkSize];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                double sum = calculateSum(buffer, bytesRead);
+                chunks.add(sum);
             }
         }
         return chunks;
     }
 
-    private static double calculateSum(String text) {
-        // Simple sum calculation based on character values for demo purposes
-        return text.chars().mapToDouble(c -> (double) c).sum();
+    private static double calculateSum(byte[] buffer, int length) {
+        double sum = 0;
+        for (int i = 0; i < length; i++) {
+            sum += Byte.toUnsignedInt(buffer[i]);
+        }
+        return sum;
     }
 
     private static double calculateSimilarity(List<Double> chunks1, List<Double> chunks2) {
