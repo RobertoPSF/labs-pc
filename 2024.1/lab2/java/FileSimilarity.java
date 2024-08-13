@@ -1,7 +1,6 @@
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class FileSimilarity {
 
@@ -10,16 +9,17 @@ public class FileSimilarity {
         Map<String, List<Double>> fileChunks = new HashMap<>();
         
         // Step 1: Read files and divide content into chunks
-        try (Stream<Path> paths = Files.walk(dirPath)) {
-            paths.filter(Files::isRegularFile)
-                 .forEach(file -> {
-                     try {
-                         List<Double> chunks = getChunks(file.toFile(), 100);
-                         fileChunks.put(file.getFileName().toString(), chunks);
-                     } catch (IOException e) {
-                         e.printStackTrace();
-                     }
-                 });
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dirPath)) {
+            for (Path path : stream) {
+                if (Files.isRegularFile(path)) {
+                    try {
+                        List<Double> chunks = getChunks(path.toFile(), 100);
+                        fileChunks.put(path.getFileName().toString(), chunks);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         // Step 2: Calculate sums of chunks and compare
@@ -46,9 +46,11 @@ public class FileSimilarity {
             Map<String, Double> similarities = entry.getValue();
             StringBuilder result = new StringBuilder(file1);
             
-            similarities.forEach((file2, similarity) -> 
-                result.append(" ").append(file2).append(" ").append(String.format("%.2f", similarity))
-            );
+            for (Map.Entry<String, Double> similarityEntry : similarities.entrySet()) {
+                String file2 = similarityEntry.getKey();
+                double similarity = similarityEntry.getValue();
+                result.append(" ").append(file2).append(" ").append(String.format("%.2f", similarity));
+            }
             
             System.out.println(result.toString());
         }
@@ -76,8 +78,15 @@ public class FileSimilarity {
     }
 
     private static double calculateSimilarity(List<Double> chunks1, List<Double> chunks2) {
-        double sum1 = chunks1.stream().mapToDouble(Double::doubleValue).sum();
-        double sum2 = chunks2.stream().mapToDouble(Double::doubleValue).sum();
+        double sum1 = 0;
+        for (double chunk : chunks1) {
+            sum1 += chunk;
+        }
+
+        double sum2 = 0;
+        for (double chunk : chunks2) {
+            sum2 += chunk;
+        }
         
         // Normalize sums to get similarity
         double maxSum = Math.max(sum1, sum2);
