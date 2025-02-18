@@ -2,22 +2,33 @@ package src;
 
 public class Main {
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Use: java Main <num_producers> <num_consumers>");
-            return;
-        }
-
-        int numProducers = Integer.parseInt(args[0]);
-        int numConsumers = Integer.parseInt(args[1]);
-        
         Buffer buffer = new Buffer();
         
+        int numProducers = 2;
+        int numConsumers = 2;
+        
+        Thread[] producers = new Thread[numProducers];
+        Thread[] consumers = new Thread[numConsumers];
+        
         for (int i = 0; i < numProducers; i++) {
-            new Producer(buffer).start();
+            producers[i] = new Producer(buffer);
+            producers[i].start();
         }
         
         for (int i = 0; i < numConsumers; i++) {
-            new Consumer(buffer).start();
+            consumers[i] = new Consumer(buffer);
+            consumers[i].start();
+        }
+        
+        try {
+            for (Thread producer : producers) {
+                producer.join();
+            }
+            for (Thread consumer : consumers) {
+                consumer.join();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
