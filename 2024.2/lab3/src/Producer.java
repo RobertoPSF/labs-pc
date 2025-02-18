@@ -12,7 +12,7 @@ class Producer extends Thread {
         for (int i = 0; i < 10; i++) {
             buffer.put(i);
             try {
-                Thread.sleep((int) (Math.random() * 1000));
+                Thread.sleep((int) (Math.random() * 100)); // Simula tempo de produção
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
