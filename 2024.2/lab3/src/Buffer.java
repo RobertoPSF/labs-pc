@@ -13,9 +13,7 @@ class Buffer {
     
     public int get() {
         if (!data.isEmpty()) {
-            int value = data.remove(0);
             System.out.println("Buffer: " + data);
-            return value;
         }
         return -1;
     }
