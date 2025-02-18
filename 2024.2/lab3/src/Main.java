@@ -3,7 +3,7 @@ package src;
 public class Main {
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Uso: java Main <num_producers> <num_consumers>");
+            System.out.println("Use: java Main <num_producers> <num_consumers>");
             return;
         }
 

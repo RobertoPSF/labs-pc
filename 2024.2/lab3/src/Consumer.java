@@ -12,7 +12,7 @@ class Consumer extends Thread {
         for (int i = 0; i < 10; i++) {
             buffer.get();
             try {
-                Thread.sleep((int) (Math.random() * 100)); // Simula tempo de consumo
+                Thread.sleep((int) (Math.random() * 100));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
