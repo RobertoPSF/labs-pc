@@ -10,7 +10,7 @@ class Producer extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            buffer.put(i);
+            buffer.put((int) (Math.random() * 100));
             try {
                 Thread.sleep((int) (Math.random() * 100));
             } catch (InterruptedException e) {
