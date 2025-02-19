@@ -1,6 +1,7 @@
 #!/bin/bash
 
-mkdir -p src/java/bin
+BASE_DIR=$(dirname -- "$( readlink -f -- "$0"; )")
 
-javac -d src/java/bin src/*.java
+mkdir -p $BASE_DIR/java/bin
 
+javac -d $BASE_DIR/java/bin $BASE_DIR/java/*.java
