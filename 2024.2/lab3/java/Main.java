@@ -18,23 +18,12 @@ public class Main {
         
         for (int i = 0; i < numProducers; i++) {
             producers[i] = new Producer(buffer, maxItemsPerProducer, 100);
-            producers[i].start();
+            producers[i].run();
         }
         
         for (int i = 0; i < numConsumers; i++) {
             consumers[i] = new Consumer(buffer, 150, itemsPerConsumer);
-            consumers[i].start();
-        }
-        
-        try {
-            for (Thread producer : producers) {
-                producer.join();
-            }
-            for (Thread consumer : consumers) {
-                consumer.join();
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            consumers[i].run();
         }
     }
 }
