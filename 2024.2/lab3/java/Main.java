@@ -13,17 +13,15 @@ public class Main {
         int itemsPerConsumer = totalItems / numConsumers;
         
         Buffer buffer = new Buffer();
-        Thread[] producers = new Thread[numProducers];
-        Thread[] consumers = new Thread[numConsumers];
         
         for (int i = 0; i < numProducers; i++) {
-            producers[i] = new Producer(buffer, maxItemsPerProducer, 100);
-            producers[i].run();
+            Producer producer = new Producer(buffer, maxItemsPerProducer, 100);
+            producer.run();
         }
         
         for (int i = 0; i < numConsumers; i++) {
-            consumers[i] = new Consumer(buffer, 150, itemsPerConsumer);
-            consumers[i].run();
+            Consumer consumer = new Consumer(buffer, 150, itemsPerConsumer);
+            consumer.run();
         }
     }
 }
