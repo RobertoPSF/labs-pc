@@ -1,8 +1,10 @@
 class Consumer {
     private final Buffer buffer;
     private final int sleepTime;
+    private final int id;
     
-    public Consumer(Buffer buffer, int sleepTime) {
+    public Consumer(int id, Buffer buffer, int sleepTime) {
+        this.id = id;
         this.buffer = buffer;
         this.sleepTime = sleepTime;
     }
@@ -11,6 +13,7 @@ class Consumer {
         while (true) {
             int item = buffer.remove();
             if (item == -1) break;
+            System.out.println("Consumer " + id + " consumed item " + item);
             try {
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {

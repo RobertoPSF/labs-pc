@@ -14,12 +14,12 @@ public class Main {
         Buffer buffer = new Buffer();
         
         for (int i = 0; i < numProducers; i++) {
-            Producer producer = new Producer(buffer, maxItemsPerProducer, producingTime);
+            Producer producer = new Producer(i, buffer, maxItemsPerProducer, producingTime);
             producer.produce();
         }
         
         for (int i = 0; i < numConsumers; i++) {
-            Consumer consumer = new Consumer(buffer, consumingTime);
+            Consumer consumer = new Consumer(i, buffer, consumingTime);
             consumer.process();
         }
     }
