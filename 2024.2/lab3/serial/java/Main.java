@@ -15,13 +15,13 @@ public class Main {
         Buffer buffer = new Buffer();
         
         for (int i = 0; i < numProducers; i++) {
-            Producer producer = new Producer(buffer, maxItemsPerProducer, 100);
-            producer.run();
+            Producer producer = new Producer(buffer, maxItemsPerProducer);
+            producer.produce();
         }
         
         for (int i = 0; i < numConsumers; i++) {
-            Consumer consumer = new Consumer(buffer, 150, itemsPerConsumer);
-            consumer.run();
+            Consumer consumer = new Consumer(buffer, itemsPerConsumer);
+            consumer.process();
         }
     }
 }
