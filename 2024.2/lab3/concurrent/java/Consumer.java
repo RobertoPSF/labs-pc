@@ -1,17 +1,16 @@
 class Consumer {
     private final Buffer buffer;
     private final int sleepTime;
-    private final int maxItems;
     
-    public Consumer(Buffer buffer, int sleepTime, int maxItems) {
+    public Consumer(Buffer buffer, int sleepTime) {
         this.buffer = buffer;
         this.sleepTime = sleepTime;
-        this.maxItems = maxItems;
     }
     
     public void process() {
-        for (int i = 0; i < maxItems; i++) {
-            buffer.remove();
+        while (true) {
+            int item = buffer.remove();
+            if (item == -1) break;
             try {
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
